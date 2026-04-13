@@ -1,0 +1,8 @@
+.forgejo/**
+.github/**
+.gitignore
+src/**
+node_modules/**
+tsconfig.json
+justfile
+*.vsix
