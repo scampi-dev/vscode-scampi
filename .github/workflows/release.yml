@@ -1,0 +1,51 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install and build
+        run: |
+          npm ci
+          npm run compile
+
+      - name: Package extension
+        run: npx @vscode/vsce package
+        # Produces vscode-scampi-X.Y.Z.vsix
+
+      - name: Determine prerelease
+        id: prerelease
+        run: |
+          case "${GITHUB_REF_NAME}" in
+            *-*) echo "value=true"  >> "$GITHUB_OUTPUT" ;;
+            *)   echo "value=false" >> "$GITHUB_OUTPUT" ;;
+          esac
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: '*.vsix'
+          prerelease: ${{ steps.prerelease.outputs.value }}
+          fail_on_unmatched_files: true
+          body: |
+            Install locally:
+            ```
+            code --install-extension vscode-scampi-${{ github.ref_name }}.vsix
+            ```
+
+            Released from [Codeberg](https://codeberg.org/scampi-dev/vscode-scampi). The GitHub repository is a read-only mirror — issues and pull requests should be filed on Codeberg.

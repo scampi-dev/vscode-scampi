@@ -1,0 +1,82 @@
+{
+  "name": "vscode-scampi",
+  "displayName": "scampi",
+  "description": "Language support for scampi — syntax highlighting and LSP integration",
+  "version": "0.1.0",
+  "publisher": "scampi-dev",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://codeberg.org/scampi-dev/vscode-scampi"
+  },
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Programming Languages"
+  ],
+  "activationEvents": [
+    "onLanguage:scampi"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "id": "scampi",
+        "aliases": ["scampi"],
+        "extensions": [".scampi"],
+        "configuration": "./language-configuration.json"
+      },
+      {
+        "id": "scampi-mod",
+        "aliases": ["scampi-mod"],
+        "filenames": ["scampi.mod", "scampi.sum"],
+        "configuration": "./scampi-mod-language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "scampi",
+        "scopeName": "source.scampi",
+        "path": "./syntaxes/scampi.tmLanguage.json"
+      },
+      {
+        "language": "scampi-mod",
+        "scopeName": "source.scampi-mod",
+        "path": "./syntaxes/scampi-mod.tmLanguage.json"
+      }
+    ],
+    "configuration": {
+      "title": "scampi",
+      "properties": {
+        "scampi.lsp.path": {
+          "type": "string",
+          "default": "scampls",
+          "description": "Path to the scampls binary. Use an absolute path or ensure it's on your PATH."
+        },
+        "scampi.lsp.args": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": [],
+          "description": "Additional arguments passed to scampls (e.g. [\"--log\", \"/tmp/scampls.log\"])"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "vsce package",
+    "lint": "eslint src"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^9.0.1",
+    "vscode-languageserver-protocol": "^3.17.5"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.75.0",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.4.0",
+    "@vscode/vsce": "^3.0.0"
+  }
+}

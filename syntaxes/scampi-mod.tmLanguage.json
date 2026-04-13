@@ -1,0 +1,58 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "scampi-mod",
+  "scopeName": "source.scampi-mod",
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#keywords" },
+    { "include": "#versions" },
+    { "include": "#local-paths" },
+    { "include": "#checksums" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-slash.scampi-mod",
+          "match": "//.*$"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.declaration.scampi-mod",
+          "match": "\\b(module|require)\\b"
+        }
+      ]
+    },
+    "versions": {
+      "patterns": [
+        {
+          "name": "string.unquoted.version.scampi-mod",
+          "match": "\\bv[0-9]+\\.[0-9]+\\.[0-9]+(-[a-zA-Z0-9.]+)?\\b"
+        }
+      ]
+    },
+    "local-paths": {
+      "patterns": [
+        {
+          "name": "string.unquoted.path.scampi-mod",
+          "match": "\\.\\./[^\\s)]+"
+        },
+        {
+          "name": "string.unquoted.path.scampi-mod",
+          "match": "\\./[^\\s)]+"
+        }
+      ]
+    },
+    "checksums": {
+      "patterns": [
+        {
+          "name": "string.unquoted.checksum.scampi-mod",
+          "match": "\\bh1:[a-f0-9]+\\.\\.\\."
+        }
+      ]
+    }
+  }
+}

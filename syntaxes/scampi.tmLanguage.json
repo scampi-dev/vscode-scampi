@@ -1,0 +1,142 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "scampi",
+  "scopeName": "source.scampi",
+  "patterns": [
+    { "include": "#comments" },
+    { "include": "#strings" },
+    { "include": "#numbers" },
+    { "include": "#keywords" },
+    { "include": "#constants" },
+    { "include": "#types" },
+    { "include": "#attributes" },
+    { "include": "#functions" },
+    { "include": "#type-names" },
+    { "include": "#decl-calls" },
+    { "include": "#operators" }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "name": "comment.line.double-slash.scampi",
+          "match": "//.*$"
+        },
+        {
+          "name": "comment.block.scampi",
+          "begin": "/\\*",
+          "end": "\\*/"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "name": "string.quoted.double.scampi",
+          "begin": "\"",
+          "end": "\"",
+          "patterns": [
+            {
+              "name": "constant.character.escape.scampi",
+              "match": "\\\\."
+            },
+            {
+              "name": "meta.interpolation.scampi",
+              "begin": "\\$\\{",
+              "end": "\\}",
+              "beginCaptures": {
+                "0": { "name": "punctuation.definition.interpolation.begin.scampi" }
+              },
+              "endCaptures": {
+                "0": { "name": "punctuation.definition.interpolation.end.scampi" }
+              },
+              "patterns": [
+                { "include": "source.scampi" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "numbers": {
+      "patterns": [
+        {
+          "name": "constant.numeric.scampi",
+          "match": "\\b[0-9]+\\b"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "name": "keyword.declaration.scampi",
+          "match": "\\b(module|import|let|type|func|decl|enum|attribute)\\b"
+        },
+        {
+          "name": "keyword.control.scampi",
+          "match": "\\b(for|in|if|else|return)\\b"
+        }
+      ]
+    },
+    "constants": {
+      "patterns": [
+        {
+          "name": "constant.language.scampi",
+          "match": "\\b(true|false|none)\\b"
+        }
+      ]
+    },
+    "types": {
+      "patterns": [
+        {
+          "name": "storage.type.scampi",
+          "match": "\\b(string|int|bool|float|any|list|map|block)\\b"
+        },
+        {
+          "name": "variable.language.scampi",
+          "match": "\\bself\\b"
+        }
+      ]
+    },
+    "attributes": {
+      "patterns": [
+        {
+          "name": "entity.name.decorator.scampi",
+          "match": "@[a-zA-Z_][\\w.]*"
+        }
+      ]
+    },
+    "functions": {
+      "patterns": [
+        {
+          "name": "entity.name.function.scampi",
+          "match": "[a-zA-Z_]\\w*(?=\\s*\\()"
+        }
+      ]
+    },
+    "type-names": {
+      "patterns": [
+        {
+          "name": "entity.name.type.scampi",
+          "match": "\\b[A-Z][\\w]*\\b"
+        }
+      ]
+    },
+    "decl-calls": {
+      "patterns": [
+        {
+          "name": "entity.name.function.scampi",
+          "match": "[a-z_]\\w*(?=\\s*\\{)"
+        }
+      ]
+    },
+    "operators": {
+      "patterns": [
+        {
+          "name": "keyword.operator.scampi",
+          "match": "==|!=|<=|>=|&&|\\|\\||[+\\-*/%!<>]"
+        }
+      ]
+    }
+  }
+}

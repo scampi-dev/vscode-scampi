@@ -1,0 +1,66 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+jobs:
+  release:
+    runs-on: scampi
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build and package
+        run: |
+          npm ci
+          npm run compile
+          npx @vscode/vsce package
+          ls -lh *.vsix
+
+      - name: Create release and upload assets
+        env:
+          RELEASE_TOKEN: ${{ secrets.RELEASE_TOKEN }}
+        run: |
+          set -euo pipefail
+          TAG="${GITHUB_REF_NAME}"
+          API="https://codeberg.org/api/v1"
+          REPO="scampi-dev/vscode-scampi"
+
+          PRERELEASE=false
+          case "$TAG" in *-*) PRERELEASE=true ;; esac
+
+          PAYLOAD=$(jq -n --arg tag "$TAG" --argjson pre "$PRERELEASE" \
+            '{tag_name: $tag, name: $tag, body: "", prerelease: $pre}')
+
+          HTTP_CODE=$(curl -s -o /tmp/release-response.json -w '%{http_code}' -X POST \
+            -H "Authorization: token ${RELEASE_TOKEN}" \
+            -H "Content-Type: application/json" \
+            -d "$PAYLOAD" \
+            "$API/repos/$REPO/releases")
+
+          echo "==> Release HTTP ${HTTP_CODE}"
+          if [[ "$HTTP_CODE" -ge 400 ]]; then
+            cat /tmp/release-response.json | jq .
+            echo "::error::Release creation failed"
+            exit 1
+          fi
+
+          RELEASE_ID=$(jq -r '.id' /tmp/release-response.json)
+
+          for file in *.vsix; do
+            name=$(basename "$file")
+            echo "==> Uploading ${name}..."
+            HTTP_CODE=$(curl -s -o /tmp/upload-response.json -w '%{http_code}' -X POST \
+              -H "Authorization: token ${RELEASE_TOKEN}" \
+              -H "Content-Type: application/octet-stream" \
+              --data-binary "@${file}" \
+              "$API/repos/$REPO/releases/${RELEASE_ID}/assets?name=${name}")
+            echo "    HTTP ${HTTP_CODE}"
+            if [[ "$HTTP_CODE" -ge 400 ]]; then
+              cat /tmp/upload-response.json
+              echo "::error::Upload of ${name} failed"
+              exit 1
+            fi
+          done
+
+          echo "==> Release ${TAG} published"
