@@ -1,5 +1,11 @@
 # scampi for Visual Studio Code
 
+[![CI](https://codeberg.org/scampi-dev/vscode-scampi/badges/workflows/ci.yml/badge.svg?branch=main)](https://codeberg.org/scampi-dev/vscode-scampi/actions?workflow=ci.yml) [![License](https://img.shields.io/badge/license-MIT-blue)](https://codeberg.org/scampi-dev/vscode-scampi/src/branch/main/LICENSE)
+
+> [!NOTE]
+> **scampi is developed on [Codeberg](https://codeberg.org/scampi-dev/vscode-scampi).**
+> The GitHub repository is a read-only mirror — please file issues and pull requests on Codeberg. Account creation is free and the workflow is the same as GitHub.
+
 Language support for [scampi](https://scampi.dev) configuration files.
 
 ## Features
