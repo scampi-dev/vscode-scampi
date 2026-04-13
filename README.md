@@ -8,6 +8,20 @@
 
 Language support for [scampi](https://scampi.dev) configuration files.
 
+## Install
+
+Download the latest `.vsix` from
+[Codeberg releases](https://codeberg.org/scampi-dev/vscode-scampi/releases)
+or [GitHub releases](https://github.com/scampi-dev/vscode-scampi/releases),
+then:
+
+```bash
+code --install-extension vscode-scampi-*.vsix
+```
+
+Or from within VS Code: `Ctrl+Shift+P` → **Extensions: Install from VSIX...**
+→ select the downloaded file.
+
 ## Features
 
 - **Syntax highlighting** for `.scampi` and `scampi.mod` files
